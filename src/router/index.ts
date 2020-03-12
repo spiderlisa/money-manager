@@ -8,20 +8,17 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    path: '/login',
+    component: Login
+  },
+  {
     path: '/',
-    name: 'base',
     redirect: '/home',
     component: MainArea,
     children: [
       {
         path: '/home',
-        name: 'journal',
         component: Journal
-      },
-      {
-        path: '/login',
-        name: 'login',
-        component: Login
       }
     ]
   }

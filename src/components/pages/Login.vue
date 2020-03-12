@@ -2,7 +2,6 @@
   <v-container fluid class="fill-height">
     <v-row align="center" justify="center">
       <v-col cols="12" sm="6" md="4" lg="3">
-
         <v-card tile flat elevation="1">
           <v-card-title class="px-3">
             Sign in
@@ -11,10 +10,17 @@
             <v-form v-model="dataIsValid" class="px-3 mt-2 mb-4">
               <v-text-field
                       label="Enter your e-mail address"
+                      v-model="email"
+                      :rules="rules.emailRules"
                       required
               />
               <v-text-field
                       label="Enter your password"
+                      v-model="password"
+                      :append-icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
+                      @click:append="togglePasswordVisibility"
+                      :type="passwordVisible ? 'text' : 'password'"
+                      :rules="rules.passwordRules"
                       required
                       class="mt-2"
               />
@@ -24,14 +30,13 @@
                       :disabled="!dataIsValid"
                       depressed
                       block
-                      @click="login"
-              >Sign in
-              </v-btn
+                      @click="sendForm"
               >
+                Sign in
+              </v-btn>
             </v-form>
           </v-card-text>
         </v-card>
-
       </v-col>
     </v-row>
   </v-container>
@@ -39,13 +44,14 @@
 
 <script lang="ts">
   import { Component, Vue } from "vue-property-decorator";
+  import { Action } from "vuex-class";
 
   @Component({
     name: "Login"
   })
   export default class Login extends Vue {
-    email = "";
-    password = "";
+    email = "user@gmail.com";
+    password = "testpass";
 
     rules = {
       emailRules: [
@@ -67,16 +73,27 @@
       this.passwordVisible = !this.passwordVisible;
     }
 
-    login() {
-      console.log(this.email, this.password);
-      // $store
-      //   .dispatch('login', data)
-      //   .then(() => {
-      //     $router.push('/');
-      //   })
-      //   .catch(err => {
-      //     console.error(err);
-      //   });
+    @Action('login') login: any;
+
+    sendForm() {
+      const authData = {
+        email: this.email,
+        password: this.password
+      };
+      this.$store
+        .dispatch('login', authData)
+        .then(() => {
+          this.$router.push('/');
+        })
+        .catch(err => {
+          console.error(err);
+        });
     }
   }
 </script>
+
+<style>
+  .fill-height {
+    height: 100vh;
+  }
+</style>
