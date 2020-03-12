@@ -1,23 +1,22 @@
 <template>
   <div>
-    <Header />
+    <Header/>
 
     <v-content>
-      <v-container>
-        <router-view />
-      </v-container>
+      <router-view/>
     </v-content>
   </div>
 </template>
 
 <script lang="ts">
-    import { Component, Vue } from 'vue-property-decorator';
-    import Header from "./Header.vue";
+  import { Component, Vue } from "vue-property-decorator";
+  import Header from "./Header.vue";
 
-    @Component({
-      components: {
-        Header
-      }
-    })
-    export default class MainArea extends Vue {}
+  @Component({
+    components: {
+      Header
+    }
+  })
+  export default class MainArea extends Vue {
+  }
 </script>
