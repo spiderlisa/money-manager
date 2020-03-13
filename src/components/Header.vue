@@ -4,7 +4,7 @@
 
     <v-spacer />
 
-    <v-btn text>
+    <v-btn text @click="logout">
       Log out
     </v-btn>
   </v-app-bar>
@@ -16,7 +16,12 @@ import { Component, Vue } from "vue-property-decorator";
 @Component({
   name: "Header"
 })
-export default class Header extends Vue {}
+export default class Header extends Vue {
+  logout() {
+    this.$store.dispatch('logout');
+    this.$router.push('/login');
+  }
+}
 </script>
 
 <style scoped></style>

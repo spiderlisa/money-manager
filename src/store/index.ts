@@ -3,10 +3,15 @@ import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import { User, Category, Record } from './models';
 import { AuthCrud, AuthDTO } from '@/store/api/endpoints/authEndpoints';
+import { CategoryCrud } from '@/store/api/endpoints/categoryEndpoints';
+import { JournalCrud } from '@/store/api/endpoints/journalEndpoints';
+import { UserCrud } from '@/store/api/endpoints/userEndpoints';
+import { ExpenseDTO, RecordCrud } from '@/store/api/endpoints/recordCrud';
 
 Vue.use(Vuex);
 
 interface UserState {
+  id: number,
   email: string,
   token: string
 }
@@ -24,6 +29,10 @@ const userModule = {
   },
 
   getters: {
+    id(state: UserState) {
+      return state.id;
+    },
+
     email(state: UserState) {
       return state.email;
     },
@@ -38,21 +47,20 @@ const userModule = {
   },
 
   actions: {
-    login(context: any, data: AuthDTO) {
-      AuthCrud.login(data)
-        .then((token: string) => {
-          const userState = {
-            email: data.email,
-            token: token
-          };
+    async login(context: any, data: AuthDTO) {
+      try {
+        const token = await AuthCrud.login(data);
 
-          context.commit('login', userState);
-          return data.email;
-        })
-        .catch((err) => {
-          console.error(err);
-          return null;
-        });
+        const userState = {
+          email: data.email,
+          token: token
+        };
+        context.commit('login', userState);
+        return data.email;
+      } catch(error) {
+        console.error(error);
+        return null;
+      }
     },
 
     logout(context: any) {
@@ -64,7 +72,6 @@ const userModule = {
     login(state: UserState, payload: UserState) {
       state.email = payload.email;
       state.token = payload.token;
-      console.log(state);
     },
 
     logout(state: UserState) {
@@ -76,19 +83,57 @@ const userModule = {
 
 export default new Vuex.Store({
   state: {
-
+    balance: 0,
+    categories: [],
+    journal: []
   },
 
   getters: {
-
+    categories(state): Category[] {
+      return state.categories;
+    },
+    journal(state): Record[] {
+      return state.journal;
+    }
   },
 
   actions: {
-
+    async fetchCategories(context: any) {
+      try {
+        const token = this.getters['token'];
+        const res = await CategoryCrud.getCategories(token);
+        context.commit('setCategories', res);
+      } catch(error) {
+        console.error(error);
+      }
+    },
+    async fetchJournal(context: any) {
+      try {
+        const token = this.getters['token'];
+        const res = await JournalCrud.getJournal(token);
+        context.commit('setJournal', res);
+      } catch(error) {
+        console.error(error);
+      }
+    },
+    async addExpense(context: any, payload: { expense: ExpenseDTO, categoryId: number }) {
+      try {
+        const token = this.getters['token'];
+        await RecordCrud.addExpense(payload.expense, payload.categoryId, token);
+        await context.dispatch('fetchJournal');
+      } catch(error) {
+        console.error(error);
+      }
+    }
   },
 
   mutations: {
-
+    setCategories(state: StoreState, categories: Category[]) {
+      state.categories = categories;
+    },
+    setJournal(state: StoreState, journal: Record[]) {
+      state.journal = journal;
+    }
   },
 
   modules: {

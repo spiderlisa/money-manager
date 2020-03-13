@@ -22,5 +22,9 @@
     }
   })
   export default class Journal extends Vue {
+    beforeMount() {
+      this.$store.dispatch('fetchJournal');
+      this.$store.dispatch('fetchCategories');
+    }
   }
 </script>

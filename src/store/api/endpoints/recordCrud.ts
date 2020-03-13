@@ -5,6 +5,7 @@ import { Record } from '@/store/models';
 
 export interface ExpenseDTO {
   sum: number,
+  recordDate: string,
   desc?: string
 }
 

@@ -50,8 +50,8 @@
     name: "Login"
   })
   export default class Login extends Vue {
-    email = "user@gmail.com";
-    password = "testpass";
+    email = "";
+    password = "";
 
     rules = {
       emailRules: [
