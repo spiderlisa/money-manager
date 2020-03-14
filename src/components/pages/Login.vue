@@ -1,8 +1,8 @@
 <template>
   <v-container fluid class="fill-height">
-    <v-row align="center" justify="center">
+    <v-row align="center" justify="center" class="mt-10">
       <v-col cols="12" sm="6" md="4" lg="3">
-        <v-card tile flat elevation="1">
+        <v-card flat elevation="1">
           <v-card-title class="px-3">
             Sign in
           </v-card-title>
@@ -44,7 +44,6 @@
 
 <script lang="ts">
   import { Component, Vue } from "vue-property-decorator";
-  import { Action } from "vuex-class";
 
   @Component({
     name: "Login"
@@ -69,11 +68,13 @@
     dataIsValid = false;
     passwordVisible = false;
 
+    beforeMount() {
+      this.$store.dispatch('logout');
+    }
+
     togglePasswordVisibility() {
       this.passwordVisible = !this.passwordVisible;
     }
-
-    @Action('login') login: any;
 
     sendForm() {
       const authData = {
@@ -83,7 +84,7 @@
       this.$store
         .dispatch('login', authData)
         .then(() => {
-          this.$router.push('/');
+          this.$router.push('/home');
         })
         .catch(err => {
           console.error(err);

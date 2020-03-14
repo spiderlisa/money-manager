@@ -4,7 +4,7 @@
 
     <v-spacer />
 
-    <v-btn text @click="logout">
+    <v-btn v-if="loggedIn" text @click="logout">
       Log out
     </v-btn>
   </v-app-bar>
@@ -20,6 +20,11 @@ export default class Header extends Vue {
   logout() {
     this.$store.dispatch('logout');
     this.$router.push('/login');
+  }
+
+  get loggedIn() {
+    const email = this.$store.getters['email'];
+    return !!email;
   }
 }
 </script>

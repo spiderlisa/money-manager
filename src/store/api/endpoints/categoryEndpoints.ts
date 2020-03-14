@@ -11,8 +11,7 @@ export interface CategoryDTO {
 
 export class CategoryCrud {
   public static async addCategory(categoryData: CategoryDTO, token: string): Promise<Category[]> {
-    const response = await axios.post(`${config.API_URL}/categories`, {
-      categoryData,
+    const response = await axios.post(`${config.API_URL}/categories`, categoryData, {
       headers: {
         'Authorization': `Bearer ${token}`
       }

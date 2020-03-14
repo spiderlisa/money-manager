@@ -1,5 +1,5 @@
 <template>
-  <v-dialog width="400">
+  <v-dialog width="370">
     <template v-slot:activator="{ on }">
       <v-btn depressed dark color="accent" v-on="on">
         Add record
@@ -7,30 +7,41 @@
     </template>
 
     <v-card>
-      <v-bottom-navigation flat color="accent" :value="type">
+      <v-bottom-navigation flat horizontal color="accent" :value="type" class="elevation-1" height="50">
         <v-btn @click="type = 0">
-          Expense
+          <span>Expense</span>
+          <v-icon>mdi-shopping</v-icon>
         </v-btn>
         <v-btn @click="type = 1">
-          Income
+          <span>Income</span>
+          <v-icon>mdi-import</v-icon>
         </v-btn>
       </v-bottom-navigation>
+
       <v-card-text class="pa-5">
-        <v-form>
+        <v-form class="mt-2">
           <v-text-field
+                  dense
+                  outlined
                   label="Amount"
+                  type="number"
+                  suffix="$"
+                  required
                   v-model="record.amount"
           />
           <v-select
-                  :items="categories"
+                  v-if="type === 0"
+                  dense
+                  outlined
+                  required
                   label="Category"
+                  :items="categories"
                   v-model="record.category"
-          />
-          <v-text-field
-                  label="Comment"
-                  v-model="record.comment"
+                  append-icon="mdi-plus"
+                  @click:append="newCategory"
           />
           <v-menu
+                  v-if="type === 0"
                   ref="dateMenu"
                   v-model="dateMenu"
                   :close-on-content-click="false"
@@ -38,15 +49,16 @@
                   transition="scale-transition"
                   offset-y
                   dense
+                  max-width="330"
           >
             <template v-slot:activator="{ on }">
               <v-text-field
                       v-model="record.date"
-                      label="Date"
                       dense
                       readonly
+                      outlined
                       hide-details
-                      clearable
+                      class="mb-6"
                       v-on="on"
                       @change="$refs.dateMenu.save(record.date)"
               />
@@ -55,17 +67,23 @@
                     v-model="record.date"
                     class="dateCalendar"
                     no-title
-                    elevation="2"
+                    full-width
                     @input="$refs.dateMenu.save(record.date)"
             >
             </v-date-picker>
           </v-menu>
+          <v-text-field
+                  v-if="type === 0"
+                  dense
+                  outlined
+                  label="Comment"
+                  v-model="record.comment"
+          />
         </v-form>
 
-        <v-row>
+        <v-row class="px-3">
           <v-spacer />
-
-          <v-btn small depressed color="accent" @click="saveRecord">
+          <v-btn depressed color="accent" @click="saveRecord">
             Save
           </v-btn>
         </v-row>
@@ -78,16 +96,17 @@
 <script lang="ts">
   import { Component, Vue } from "vue-property-decorator";
   import { Category } from "../../store/models";
+  import { formatToLongDate } from '../../utils/date';
 
   @Component({
     name: "AddItem"
   })
   export default class AddItem extends Vue {
     record = {
-      amount: 150,
-      category: 52,
-      comment: 'Test',
-      date: '2020-03-02T20:00:00'
+      amount: null,
+      category: null,
+      comment: null,
+      date: '2020-03-02'
     };
 
     dateMenu = false;
@@ -107,16 +126,27 @@
       });
     }
 
+    newCategory() {
+      console.log('Cat');
+    }
+
     async saveRecord() {
-      const payload = {
-        expense: {
-          sum: this.record.amount,
-          recordDate: this.record.date,
-          desc: this.record.comment
-        },
-        categoryId: this.record.category
-      };
-      await this.$store.dispatch('addExpense', payload);
+      // add expense
+      if (this.type === 0) {
+        const payload = {
+          expense: {
+            sum: this.record.amount,
+            recordDate: formatToLongDate(this.record.date),
+            desc: this.record.comment
+          },
+          categoryId: this.record.category
+        };
+        await this.$store.dispatch('addExpense', payload);
+      }
+      // add income
+      else if (this.type === 1) {
+        await this.$store.dispatch('addIncome', this.record.amount);
+      }
     }
   }
 </script>

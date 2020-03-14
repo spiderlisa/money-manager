@@ -24,9 +24,9 @@ export interface Record {
 }
 
 export enum Frequency {
-  DAILY = 'Daily',
-  WEEKLY = 'Weekly',
-  BIWEEKLY = 'Bi-weekly',
-  MONTHLY = 'Monthly',
-  YEARLY = 'Yearly'
+  DAILY,
+  WEEKLY,
+  BIWEEKLY,
+  MONTHLY,
+  YEARLY
 }

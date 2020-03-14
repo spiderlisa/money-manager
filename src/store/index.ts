@@ -6,7 +6,8 @@ import { AuthCrud, AuthDTO } from '@/store/api/endpoints/authEndpoints';
 import { CategoryCrud } from '@/store/api/endpoints/categoryEndpoints';
 import { JournalCrud } from '@/store/api/endpoints/journalEndpoints';
 import { UserCrud } from '@/store/api/endpoints/userEndpoints';
-import { ExpenseDTO, RecordCrud } from '@/store/api/endpoints/recordCrud';
+import { RecordCrud, ExpenseDTO } from '@/store/api/endpoints/recordCrud';
+import { formatFromLongDate } from '@/utils/date';
 
 Vue.use(Vuex);
 
@@ -92,6 +93,7 @@ export default new Vuex.Store({
     categories(state): Category[] {
       return state.categories;
     },
+
     journal(state): Record[] {
       return state.journal;
     }
@@ -107,19 +109,38 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
+
     async fetchJournal(context: any) {
       try {
         const token = this.getters['token'];
-        const res = await JournalCrud.getJournal(token);
+        let res = await JournalCrud.getJournal(token);
+
+        res = res.map(record => {
+          return {
+            ...record,
+            recordDate: formatFromLongDate(record.recordDate)
+          }
+        });
         context.commit('setJournal', res);
       } catch(error) {
         console.error(error);
       }
     },
+
     async addExpense(context: any, payload: { expense: ExpenseDTO, categoryId: number }) {
       try {
         const token = this.getters['token'];
         await RecordCrud.addExpense(payload.expense, payload.categoryId, token);
+        await context.dispatch('fetchJournal');
+      } catch(error) {
+        console.error(error);
+      }
+    },
+
+    async addIncome(context: any, sum: number) {
+      try {
+        const token = this.getters['token'];
+        await RecordCrud.addIncome(sum, token);
         await context.dispatch('fetchJournal');
       } catch(error) {
         console.error(error);
@@ -131,6 +152,7 @@ export default new Vuex.Store({
     setCategories(state: StoreState, categories: Category[]) {
       state.categories = categories;
     },
+
     setJournal(state: StoreState, journal: Record[]) {
       state.journal = journal;
     }

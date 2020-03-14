@@ -11,8 +11,7 @@ export interface ExpenseDTO {
 
 export class RecordCrud {
   public static async addExpense(expenseData: ExpenseDTO, categoryId: number, token: string): Promise<Record> {
-    const response = await axios.post(`${config.API_URL}/categories/${categoryId}/expenses`, {
-      expenseData,
+    const response = await axios.post(`${config.API_URL}/categories/${categoryId}/expenses`, expenseData, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -24,8 +23,7 @@ export class RecordCrud {
     const incomeData = {
       addSum: amount
     };
-    const response = await axios.put(`${config.API_URL}/profile`, {
-      incomeData,
+    const response = await axios.put(`${config.API_URL}/profile`, incomeData, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
