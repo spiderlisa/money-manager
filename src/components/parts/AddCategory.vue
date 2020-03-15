@@ -68,6 +68,12 @@
     @Emit('added-category')
     async saveCategory() {
       await this.$store.dispatch("addCategory", this.category);
+
+      this.category = {
+        name: null,
+        budget: null,
+        frequency: null
+      };
     }
 
     @Emit('added-category')

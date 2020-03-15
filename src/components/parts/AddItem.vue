@@ -144,6 +144,13 @@
       else if (this.type === 1) {
         await this.$store.dispatch("addIncome", this.record.amount);
       }
+
+      this.record = {
+        amount: null,
+        category: null,
+        comment: null,
+        date: dateformat(new Date(), "isoDate")
+      }
     }
 
     backToRecord() {
