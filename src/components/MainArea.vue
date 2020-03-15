@@ -5,6 +5,8 @@
     <v-content>
       <router-view />
     </v-content>
+
+    <v-overlay absolute :value="loading" color="white"/>
   </div>
 </template>
 
@@ -18,5 +20,8 @@
     }
   })
   export default class MainArea extends Vue {
+    get loading() {
+      return this.$store.getters['loading'];
+    }
   }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <v-dialog width="370">
     <template v-slot:activator="{ on }">
-      <v-btn depressed dark color="accent" v-on="on">
+      <v-btn depressed dark block color="accent" class="mt-4" v-on="on">
         Add record
       </v-btn>
     </template>
@@ -25,6 +25,7 @@
                   outlined
                   label="Amount"
                   type="number"
+                  min="0.01"
                   suffix="$"
                   required
                   v-model="record.amount"

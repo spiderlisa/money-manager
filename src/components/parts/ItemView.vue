@@ -1,15 +1,29 @@
 <template>
-
+  <v-card tile flat>
+    <v-divider />
+    <v-card-text>
+      <v-row class="px-3">
+        <v-chip small class="mr-3">
+          {{ record.category && record.category.name || "Salary" }}
+        </v-chip>
+        {{ record.desc }}
+        <v-spacer/>
+        ${{ record.sum }}
+      </v-row>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script lang="ts">
-  import { Component, Prop, Vue } from "vue-property-decorator";
-  import { Record } from "../../store/models";
+  import { Component, Vue } from "vue-property-decorator";
 
   @Component({
-    name: "ItemView"
+    name: 'DayView',
+    props: {
+      record: {}
+    }
   })
-  export default class ItemView extends Vue {
-    // @Prop details: Record;
+  export default class DayView extends Vue {
   }
+
 </script>
