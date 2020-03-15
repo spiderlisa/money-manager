@@ -6,14 +6,14 @@
         <StatusCard :info="{ title: 'Expenses', value: expenses }"/>
         <StatusCard :info="{ title: 'Income', value: income }"/>
 
-        <v-dialog width="370">
+        <v-dialog width="370" v-model="addRecordDialog">
           <template v-slot:activator="{ on }">
             <v-btn depressed dark block color="accent" class="mt-4" v-on="on">
               Add record
             </v-btn>
           </template>
 
-          <AddItem/>
+          <AddItem @close-dialog="addRecordDialog = false"/>
         </v-dialog>
       </v-col>
 
@@ -48,23 +48,22 @@
     }
   })
   export default class Journal extends Vue {
+    addRecordDialog = false;
+
     beforeMount() {
       this.$store.dispatch("fetchJournal");
       this.$store.dispatch("fetchCategories");
     }
 
     get balance() {
-      console.log(this.$store.getters["balance"]);
       return this.$store.getters["balance"];
     }
 
     get income() {
-      console.log(this.$store.getters["currentMonthIncome"]);
       return this.$store.getters["currentMonthIncome"];
     }
 
     get expenses() {
-      console.log(this.$store.getters["currentMonthExpenses"]);
       return this.$store.getters["currentMonthExpenses"];
     }
 

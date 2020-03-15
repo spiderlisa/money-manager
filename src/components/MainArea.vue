@@ -6,7 +6,7 @@
       <router-view />
     </v-content>
 
-    <v-overlay absolute :value="loading" color="white"/>
+    <v-overlay absolute :value="loading" color="white" z-index="1000"/>
   </div>
 </template>
 

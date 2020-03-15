@@ -95,7 +95,10 @@ export default new Vuex.Store({
 
   getters: {
     balance(state): number {
-      return state.balance;
+      let balanceStr = state.balance.toString();
+      if (balanceStr.includes('.00'))
+        balanceStr = balanceStr.slice(0, balanceStr.lastIndexOf('.'));
+      return Number.parseFloat(balanceStr);
     },
 
     categories(state): Category[] {
@@ -152,9 +155,7 @@ export default new Vuex.Store({
       context.commit('setLoading', true);
 
       try {
-        const token = this.getters['token'];
-        const res = await CategoryCrud.getCategories(token);
-        context.commit('setCategories', res);
+        await context.dispatch('fetchUserInfo');
       } catch(error) {
         console.error(error);
       } finally {
@@ -210,7 +211,7 @@ export default new Vuex.Store({
       try {
         const token = this.getters['token'];
         await CategoryCrud.addCategory(category, token);
-        await context.dispatch('fetchCategories');
+        await context.dispatch('fetchUserInfo');
       } catch(error) {
         console.error(error);
       } finally {
@@ -225,6 +226,7 @@ export default new Vuex.Store({
         const token = this.getters['token'];
         const res = await UserCrud.getProfile(token);
         context.commit('setBalance', res.balance);
+        context.commit('setCategories', res.categories);
       } catch(error) {
         console.error(error);
       } finally {

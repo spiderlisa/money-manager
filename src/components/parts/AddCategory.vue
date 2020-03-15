@@ -72,7 +72,7 @@
 
     @Emit('added-category')
     exit() {
-      console.log('bye');
+      // console.log('bye');
     }
   }
 </script>

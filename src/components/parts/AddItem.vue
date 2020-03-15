@@ -51,8 +51,10 @@
                     dense
                     readonly
                     outlined
+                    required
                     hide-details
                     class="mb-6"
+                    label="Date"
                     v-on="on"
                     @change="$refs.dateMenu.save(record.date)"
             />
@@ -87,7 +89,8 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue, Watch } from "vue-property-decorator";
+  import { Component, Emit, Vue } from "vue-property-decorator";
+  import dateformat from "dateformat";
   import AddCategory from "./AddCategory.vue";
   import { Category } from "../../store/models";
   import { formatToLongDate } from "../../utils/date";
@@ -103,16 +106,11 @@
       amount: null,
       category: null,
       comment: null,
-      date: "2020-03-02"
+      date: dateformat(new Date(), "isoDate")
     };
 
     dateMenu = false;
     type = 0;
-
-    @Watch('type')
-    printType() {
-      console.log(this.type);
-    }
 
     get categories() {
       const data = this.$store.getters["categories"];
@@ -128,6 +126,7 @@
       });
     }
 
+    @Emit('close-dialog')
     async saveRecord() {
       // add expense
       if (this.type === 0) {

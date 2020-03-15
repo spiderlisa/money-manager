@@ -1,14 +1,21 @@
 <template>
   <v-card tile flat>
     <v-divider />
-    <v-card-text>
+    <v-card-text color="primary">
       <v-row class="px-3">
-        <v-chip small class="mr-3">
-          {{ record.category && record.category.name || "Salary" }}
+        <v-chip small class="mr-3" :color="category.color">
+          {{ category.name }}
         </v-chip>
-        {{ record.desc }}
+
+        <span>
+          {{ record.desc }}
+        </span>
+
         <v-spacer/>
-        ${{ record.sum }}
+
+        <span class="font-weight-bold">
+          {{ record.sum }}
+        </span>
       </v-row>
     </v-card-text>
   </v-card>
@@ -24,6 +31,20 @@
     }
   })
   export default class DayView extends Vue {
+    get category() {
+      const recCat = this.$props.record.category;
+
+      if (recCat)
+        return {
+          color: 'info',
+          name: recCat.name
+        };
+      else
+        return {
+          color: 'success',
+          name: 'Income'
+        }
+    }
   }
 
 </script>

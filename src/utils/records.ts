@@ -8,14 +8,14 @@ export interface RecordsDay {
 function dayWithDate(days: RecordsDay[], date: string): RecordsDay | null {
   let day = null;
   days.forEach((d: RecordsDay) => {
-    if (d.date === date) {
+    if ((new Date(d.date)).toLocaleDateString() === (new Date(date)).toLocaleDateString()) {
       day = d;
     }
   });
 
   days.sort((d1: RecordsDay, d2: RecordsDay) => {
-    if (d1.date > d2.date) return 1;
-    if (d1.date < d2.date) return -1;
+    if (d1.date > d2.date) return -1;
+    if (d1.date < d2.date) return 1;
     return 0;
   });
 
