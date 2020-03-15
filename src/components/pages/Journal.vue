@@ -2,16 +2,25 @@
   <v-container>
     <v-row class="mx-md-12 px-lg-12">
       <v-col cols="3">
-        <StatusCard :info="{ title: 'Balance', value: balance }" />
-        <StatusCard :info="{ title: 'Expenses', value: expenses }" />
-        <StatusCard :info="{ title: 'Income', value: income }" />
-        <AddItem/>
+        <StatusCard :info="{ title: 'Balance', value: balance }"/>
+        <StatusCard :info="{ title: 'Expenses', value: expenses }"/>
+        <StatusCard :info="{ title: 'Income', value: income }"/>
+
+        <v-dialog width="370">
+          <template v-slot:activator="{ on }">
+            <v-btn depressed dark block color="accent" class="mt-4" v-on="on">
+              Add record
+            </v-btn>
+          </template>
+
+          <AddItem/>
+        </v-dialog>
       </v-col>
 
       <v-col cols="9">
         <div v-if="recordDays">
           <template v-for="(day, k) in recordDays">
-            <DayView :key="k" :day="day" />
+            <DayView :key="k" :day="day"/>
           </template>
         </div>
         <v-card v-else flat class="elevation-2">
@@ -29,7 +38,7 @@
   import StatusCard from "../parts/StatusCard.vue";
   import AddItem from "../parts/AddItem.vue";
   import DayView from "../parts/DayView.vue";
-  import { groupRecordsByDate } from '../../utils/records';
+  import { groupRecordsByDate } from "../../utils/records";
 
   @Component({
     components: {
@@ -40,27 +49,27 @@
   })
   export default class Journal extends Vue {
     beforeMount() {
-      this.$store.dispatch('fetchJournal');
-      this.$store.dispatch('fetchCategories');
+      this.$store.dispatch("fetchJournal");
+      this.$store.dispatch("fetchCategories");
     }
 
     get balance() {
-      console.log(this.$store.getters['balance']);
-      return this.$store.getters['balance'];
+      console.log(this.$store.getters["balance"]);
+      return this.$store.getters["balance"];
     }
 
     get income() {
-      console.log(this.$store.getters['currentMonthIncome']);
-      return this.$store.getters['currentMonthIncome'];
+      console.log(this.$store.getters["currentMonthIncome"]);
+      return this.$store.getters["currentMonthIncome"];
     }
 
     get expenses() {
-      console.log(this.$store.getters['currentMonthExpenses']);
-      return this.$store.getters['currentMonthExpenses'];
+      console.log(this.$store.getters["currentMonthExpenses"]);
+      return this.$store.getters["currentMonthExpenses"];
     }
 
     get recordDays() {
-      const journal = this.$store.getters['journal'];
+      const journal = this.$store.getters["journal"];
       return journal ? groupRecordsByDate(journal) : null;
     }
   }

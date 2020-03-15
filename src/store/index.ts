@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import { User, Category, Record } from './models';
 import { AuthCrud, AuthDTO } from '@/store/api/endpoints/authEndpoints';
-import { CategoryCrud } from '@/store/api/endpoints/categoryEndpoints';
+import { CategoryCrud, CategoryDTO } from '@/store/api/endpoints/categoryEndpoints';
 import { JournalCrud } from '@/store/api/endpoints/journalEndpoints';
 import { UserCrud } from '@/store/api/endpoints/userEndpoints';
 import { RecordCrud, ExpenseDTO } from '@/store/api/endpoints/recordCrud';
@@ -197,6 +197,20 @@ export default new Vuex.Store({
         const token = this.getters['token'];
         await RecordCrud.addIncome(sum, token);
         await context.dispatch('fetchJournal');
+      } catch(error) {
+        console.error(error);
+      } finally {
+        context.commit('setLoading', false);
+      }
+    },
+
+    async addCategory(context: any, category: CategoryDTO) {
+      context.commit('setLoading', true);
+
+      try {
+        const token = this.getters['token'];
+        await CategoryCrud.addCategory(category, token);
+        await context.dispatch('fetchCategories');
       } catch(error) {
         console.error(error);
       } finally {
