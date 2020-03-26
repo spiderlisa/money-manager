@@ -12,7 +12,7 @@
     </v-bottom-navigation>
 
     <v-card-text class="pa-5">
-      <v-form class="mt-2" v-model="form">
+      <v-form class="mt-2" v-model="form" ref="form">
         <v-text-field
                 dense
                 outlined
@@ -81,7 +81,7 @@
 
       <v-row class="px-3">
         <v-spacer/>
-        <v-btn depressed color="accent" @click="saveRecord">
+        <v-btn depressed color="accent" :disabled="!form" @click="saveRecord">
           Save
         </v-btn>
       </v-row>
@@ -157,12 +157,8 @@
         await this.$store.dispatch("addIncome", this.record.amount);
       }
 
-      this.record = {
-        amount: null,
-        category: null,
-        comment: null,
-        date: dateformat(new Date(), "isoDate")
-      }
+      // @ts-ignore
+      this.$refs.form.reset();
     }
 
     backToRecord() {

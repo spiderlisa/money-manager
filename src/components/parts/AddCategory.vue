@@ -4,7 +4,7 @@
       New category
     </v-card-title>
     <v-card-text class="mt-3">
-      <v-form v-model="form">
+      <v-form v-model="form" ref="form">
         <v-text-field
                 dense
                 outlined
@@ -41,7 +41,7 @@
         <v-btn depressed color="gray" class="mr-2" @click="exit">
           Cancel
         </v-btn>
-        <v-btn depressed color="accent" @click="saveCategory">
+        <v-btn depressed color="accent" :disabled="!form" @click="saveCategory">
           Save
         </v-btn>
       </v-row>
@@ -85,11 +85,8 @@
     async saveCategory() {
       await this.$store.dispatch("addCategory", this.category);
 
-      this.category = {
-        name: null,
-        budget: null,
-        frequency: null
-      };
+      // @ts-ignore
+      this.$refs.form.reset();
     }
 
     @Emit('added-category')
