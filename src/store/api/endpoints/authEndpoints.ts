@@ -1,10 +1,10 @@
 // @ts-ignore
-import config from '../config.json';
-import axios from 'axios';
+import config from "../config.json";
+import axios from "axios";
 
 export interface AuthDTO {
-  email: string,
-  password: string
+  email: string;
+  password: string;
 }
 
 export class AuthCrud {

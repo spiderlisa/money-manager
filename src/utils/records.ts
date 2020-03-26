@@ -1,4 +1,4 @@
-import { Record } from '@/store/models';
+import { Record } from "@/store/models";
 
 export interface RecordsDay {
   date: string;
@@ -8,7 +8,10 @@ export interface RecordsDay {
 function dayWithDate(days: RecordsDay[], date: string): RecordsDay | null {
   let day = null;
   days.forEach((d: RecordsDay) => {
-    if ((new Date(d.date)).toLocaleDateString() === (new Date(date)).toLocaleDateString()) {
+    if (
+      new Date(d.date).toLocaleDateString() ===
+      new Date(date).toLocaleDateString()
+    ) {
       day = d;
     }
   });

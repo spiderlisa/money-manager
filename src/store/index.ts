@@ -1,12 +1,15 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import createPersistedState from 'vuex-persistedstate';
-import { User, Category, Record } from './models';
-import { AuthCrud, AuthDTO } from '@/store/api/endpoints/authEndpoints';
-import { CategoryCrud, CategoryDTO } from '@/store/api/endpoints/categoryEndpoints';
-import { JournalCrud } from '@/store/api/endpoints/journalEndpoints';
-import { UserCrud } from '@/store/api/endpoints/userEndpoints';
-import { RecordCrud, ExpenseDTO } from '@/store/api/endpoints/recordCrud';
+import Vue from "vue";
+import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
+import { Category, Record } from "./models";
+import { AuthCrud, AuthDTO } from "@/store/api/endpoints/authEndpoints";
+import {
+  CategoryCrud,
+  CategoryDTO
+} from "@/store/api/endpoints/categoryEndpoints";
+import { JournalCrud } from "@/store/api/endpoints/journalEndpoints";
+import { UserCrud } from "@/store/api/endpoints/userEndpoints";
+import { RecordCrud, ExpenseDTO } from "@/store/api/endpoints/recordCrud";
 
 Vue.use(Vuex);
 
@@ -25,8 +28,8 @@ interface StoreState {
 
 const userModule = {
   state: {
-    email: '',
-    token: ''
+    email: "",
+    token: ""
   },
 
   getters: {
@@ -40,16 +43,12 @@ const userModule = {
 
     token(state: UserState) {
       return state.token;
-    },
-
-    isLoggedIn(state: UserState) {
-      // TODO: add api functionality
     }
   },
 
   actions: {
     async login(context: any, data: AuthDTO) {
-      context.commit('setLoading', true);
+      context.commit("setLoading", true);
 
       try {
         const token = await AuthCrud.login(data);
@@ -58,16 +57,16 @@ const userModule = {
           email: data.email,
           token: token
         };
-        context.commit('login', userState);
-      } catch(error) {
+        context.commit("login", userState);
+      } catch (error) {
         console.error(error);
       } finally {
-        context.commit('setLoading', false);
+        context.commit("setLoading", false);
       }
     },
 
     logout(context: any) {
-      context.commit('logout');
+      context.commit("logout");
     }
   },
 
@@ -78,8 +77,8 @@ const userModule = {
     },
 
     logout(state: UserState) {
-      state.email = '';
-      state.token = '';
+      state.email = "";
+      state.token = "";
     }
   }
 };
@@ -96,8 +95,8 @@ export default new Vuex.Store({
   getters: {
     balance(state): number {
       let balanceStr = state.balance.toString();
-      if (balanceStr.includes('.00'))
-        balanceStr = balanceStr.slice(0, balanceStr.lastIndexOf('.'));
+      if (balanceStr.includes(".00"))
+        balanceStr = balanceStr.slice(0, balanceStr.lastIndexOf("."));
       return Number.parseFloat(balanceStr);
     },
 
@@ -121,7 +120,10 @@ export default new Vuex.Store({
         state.journal.forEach((record: Record) => {
           if (!record.category) {
             const date = new Date(record.recordDate);
-            if (date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()) {
+            if (
+              date.getMonth() === now.getMonth() &&
+              date.getFullYear() === now.getFullYear()
+            ) {
               sum += Number.parseFloat(record.sum);
             }
           }
@@ -139,7 +141,10 @@ export default new Vuex.Store({
         state.journal.forEach((record: Record) => {
           if (record.category) {
             const date = new Date(record.recordDate);
-            if (date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()) {
+            if (
+              date.getMonth() === now.getMonth() &&
+              date.getFullYear() === now.getFullYear()
+            ) {
               sum -= Number.parseFloat(record.sum);
             }
           }
@@ -152,85 +157,88 @@ export default new Vuex.Store({
 
   actions: {
     async fetchCategories(context: any) {
-      context.commit('setLoading', true);
+      context.commit("setLoading", true);
 
       try {
-        await context.dispatch('fetchUserInfo');
-      } catch(error) {
+        await context.dispatch("fetchUserInfo");
+      } catch (error) {
         console.error(error);
       } finally {
-        context.commit('setLoading', false);
+        context.commit("setLoading", false);
       }
     },
 
     async fetchJournal(context: any) {
-      context.commit('setLoading', true);
+      context.commit("setLoading", true);
 
       try {
-        const token = this.getters['token'];
+        const token = this.getters["token"];
         const res = await JournalCrud.getJournal(token);
-        context.commit('setJournal', res);
-      } catch(error) {
+        context.commit("setJournal", res);
+      } catch (error) {
         console.error(error);
       } finally {
-        context.commit('setLoading', false);
+        context.commit("setLoading", false);
       }
     },
 
-    async addExpense(context: any, payload: { expense: ExpenseDTO, categoryId: number }) {
-      context.commit('setLoading', true);
+    async addExpense(
+      context: any,
+      payload: { expense: ExpenseDTO; categoryId: number }
+    ) {
+      context.commit("setLoading", true);
 
       try {
-        const token = this.getters['token'];
+        const token = this.getters["token"];
         await RecordCrud.addExpense(payload.expense, payload.categoryId, token);
-        await context.dispatch('fetchJournal');
-      } catch(error) {
+        await context.dispatch("fetchJournal");
+      } catch (error) {
         console.error(error);
       } finally {
-        context.commit('setLoading', false);
+        context.commit("setLoading", false);
       }
     },
 
     async addIncome(context: any, sum: number) {
-      context.commit('setLoading', true);
+      context.commit("setLoading", true);
 
       try {
-        const token = this.getters['token'];
+        const token = this.getters["token"];
         await RecordCrud.addIncome(sum, token);
-        await context.dispatch('fetchJournal');
-      } catch(error) {
+        await context.dispatch("fetchJournal");
+      } catch (error) {
         console.error(error);
       } finally {
-        context.commit('setLoading', false);
+        context.commit("setLoading", false);
       }
     },
 
     async addCategory(context: any, category: CategoryDTO) {
-      context.commit('setLoading', true);
+      context.commit("setLoading", true);
 
       try {
-        const token = this.getters['token'];
+        const token = this.getters["token"];
         await CategoryCrud.addCategory(category, token);
-        await context.dispatch('fetchUserInfo');
-      } catch(error) {
+        await context.dispatch("fetchUserInfo");
+      } catch (error) {
         console.error(error);
       } finally {
-        context.commit('setLoading', false);
+        context.commit("setLoading", false);
       }
     },
 
     async fetchUserInfo(context: any) {
-      context.commit('setLoading', true);
+      context.commit("setLoading", true);
 
       try {
-        const token = this.getters['token'];
+        const token = this.getters["token"];
         const res = await UserCrud.getProfile(token);
-        context.commit('setBalance', res.balance);
-        context.commit('setCategories', res.categories);
-      } catch(error) {
+        context.commit("setBalance", res.balance);
+        context.commit("setCategories", res.categories);
+      } catch (error) {
         console.error(error);
       } finally {
-        context.commit('setLoading', false);
+        context.commit("setLoading", false);
       }
     }
   },
@@ -259,7 +267,7 @@ export default new Vuex.Store({
 
   plugins: [
     createPersistedState({
-      paths: ['user']
-    }),
-  ],
+      paths: ["user"]
+    })
+  ]
 });

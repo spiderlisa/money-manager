@@ -1,28 +1,35 @@
 // @ts-ignore
-import config from '../config.json';
-import axios from 'axios';
-import { Record, Category } from '../../models';
+import config from "../config.json";
+import axios from "axios";
+import { Record, Category } from "../../models";
 
 export interface CategoryDTO {
-  name: string,
-  budget: string,
-  freq: string
+  name: string;
+  budget: string;
+  freq: string;
 }
 
 export class CategoryCrud {
-  public static async addCategory(categoryData: CategoryDTO, token: string): Promise<Category[]> {
-    const response = await axios.post(`${config.API_URL}/categories`, categoryData, {
-      headers: {
-        'Authorization': `Bearer ${token}`
+  public static async addCategory(
+    categoryData: CategoryDTO,
+    token: string
+  ): Promise<Category[]> {
+    const response = await axios.post(
+      `${config.API_URL}/categories`,
+      categoryData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
     return response.data;
   }
 
   public static async getCategories(token: string): Promise<Category[]> {
     const response = await axios.get(`${config.API_URL}/categories`, {
       headers: {
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     });
     return response.data;

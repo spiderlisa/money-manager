@@ -1,7 +1,7 @@
-import dateformat from 'dateformat';
+import dateformat from "dateformat";
 
 export function formatFromLongDate(value: string) {
-  return value.slice(0, value.indexOf('T'));
+  return value.slice(0, value.indexOf("T"));
 }
 
 export function formatToLongDate(value: string) {
@@ -14,7 +14,7 @@ export function formatToWritten(value: string) {
 }
 
 export function toSeconds(value: string) {
-  const seconds = (new Date(value)).getTime() / 1000;
+  const seconds = new Date(value).getTime() / 1000;
   return seconds;
 }
 

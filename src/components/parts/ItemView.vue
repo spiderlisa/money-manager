@@ -11,7 +11,7 @@
           {{ record.desc }}
         </span>
 
-        <v-spacer/>
+        <v-spacer />
 
         <span class="font-weight-bold">
           {{ record.sum }}
@@ -22,30 +22,29 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from "vue-property-decorator";
-  import { Record } from "../../store/models";
+import { Component, Vue } from "vue-property-decorator";
+import { Record } from "../../store/models";
 
-  @Component({
-    name: 'DayView',
-    props: {
-      record: Object as () => Record
-    }
-  })
-  export default class DayView extends Vue {
-    get category() {
-      const recCat = this.$props.record.category;
-
-      if (recCat)
-        return {
-          color: 'info',
-          name: recCat.name
-        };
-      else
-        return {
-          color: 'success',
-          name: 'Income'
-        }
-    }
+@Component({
+  name: "DayView",
+  props: {
+    record: Object as () => Record
   }
+})
+export default class DayView extends Vue {
+  get category() {
+    const recCat = this.$props.record.category;
 
+    if (recCat)
+      return {
+        color: "info",
+        name: recCat.name
+      };
+    else
+      return {
+        color: "success",
+        name: "Income"
+      };
+  }
+}
 </script>

@@ -1,14 +1,14 @@
 // @ts-ignore
-import config from '../config.json';
-import axios from 'axios';
-import { Record } from '../../models';
-import { fromSecondsToText } from '@/utils/date';
+import config from "../config.json";
+import axios from "axios";
+import { Record } from "../../models";
+import { fromSecondsToText } from "@/utils/date";
 
 export class JournalCrud {
   public static async getJournal(token: string): Promise<Record[]> {
     const response = await axios.get(`${config.API_URL}/journal`, {
       headers: {
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     });
 

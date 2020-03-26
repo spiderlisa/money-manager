@@ -18,12 +18,12 @@ import { Component, Vue } from "vue-property-decorator";
 })
 export default class Header extends Vue {
   logout() {
-    this.$store.dispatch('logout');
-    this.$router.push('/login');
+    this.$store.dispatch("logout");
+    this.$router.push("/login");
   }
 
   get loggedIn() {
-    const email = this.$store.getters['email'];
+    const email = this.$store.getters["email"];
     return !!email;
   }
 }
