@@ -33,7 +33,10 @@ const router = new VueRouter({
 
 let entryUrl: string | null = null;
 router.beforeEach((to, from, next) => {
+  // add title
   document.title = 'Money Manager | ' + to.meta.title;
+
+  // reroute login
   if (to.path !== "/login") {
     if (store.getters["token"]) {
       if (entryUrl) {
