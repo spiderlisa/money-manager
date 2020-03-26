@@ -10,16 +10,18 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    redirect: "/login",
+    redirect: "/home",
     component: MainArea,
     children: [
       {
         path: "/login",
-        component: Login
+        component: Login,
+        title: 'Login'
       },
       {
         path: "/home",
-        component: Journal
+        component: Journal,
+        title: 'Home'
       }
     ]
   }
@@ -31,6 +33,7 @@ const router = new VueRouter({
 
 let entryUrl: string | null = null;
 router.beforeEach((to, from, next) => {
+  document.title = 'Money Manager | ' + to.meta.title;
   if (to.path !== "/login") {
     if (store.getters["token"]) {
       if (entryUrl) {
