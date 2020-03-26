@@ -23,11 +23,12 @@
 
 <script lang="ts">
   import { Component, Vue } from "vue-property-decorator";
+  import { Record } from "../../store/models";
 
   @Component({
     name: 'DayView',
     props: {
-      record: {}
+      record: Object as () => Record
     }
   })
   export default class DayView extends Vue {

@@ -12,15 +12,16 @@
     </v-bottom-navigation>
 
     <v-card-text class="pa-5">
-      <v-form class="mt-2">
+      <v-form class="mt-2" v-model="form">
         <v-text-field
                 dense
                 outlined
                 label="Amount"
                 type="number"
-                min="0.01"
+                min="1"
                 suffix="$"
                 required
+                :rules="rules.amount"
                 v-model="record.amount"
         />
         <v-select
@@ -28,6 +29,7 @@
                 dense
                 outlined
                 required
+                :rules="rules.category"
                 label="Category"
                 :items="categories"
                 v-model="record.category"
@@ -93,7 +95,7 @@
   import dateformat from "dateformat";
   import AddCategory from "./AddCategory.vue";
   import { Category } from "../../store/models";
-  import { formatToLongDate } from "../../utils/date";
+  import { toSeconds } from "../../utils/date";
 
   @Component({
     name: "AddItem",
@@ -111,6 +113,16 @@
 
     dateMenu = false;
     type = 0;
+
+    form = true;
+    rules = {
+      amount: [
+        (v: any) => !!v || 'Amount is required'
+      ],
+      category: [
+        (v: any) => !!v || 'Category is required'
+      ]
+    };
 
     get categories() {
       const data = this.$store.getters["categories"];
@@ -133,7 +145,7 @@
         const payload = {
           expense: {
             sum: this.record.amount,
-            recordDate: formatToLongDate(this.record.date),
+            recordDate: toSeconds(this.record.date),
             desc: this.record.comment
           },
           categoryId: this.record.category

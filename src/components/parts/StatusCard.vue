@@ -20,7 +20,7 @@
   @Component({
     name: 'StatusCard',
     props: {
-      info: {}
+      info: Object
     }
   })
   export default class StatusCard extends Vue {}

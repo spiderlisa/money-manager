@@ -13,12 +13,6 @@ function dayWithDate(days: RecordsDay[], date: string): RecordsDay | null {
     }
   });
 
-  days.sort((d1: RecordsDay, d2: RecordsDay) => {
-    if (d1.date > d2.date) return -1;
-    if (d1.date < d2.date) return 1;
-    return 0;
-  });
-
   return day;
 }
 
@@ -37,6 +31,12 @@ export function groupRecordsByDate(journal: Record[]): RecordsDay[] {
         records: [record]
       });
     }
+  });
+
+  days.sort((d1: RecordsDay, d2: RecordsDay) => {
+    if (d1.date > d2.date) return -1;
+    if (d1.date < d2.date) return 1;
+    return 0;
   });
 
   return days;

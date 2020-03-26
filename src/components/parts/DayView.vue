@@ -20,7 +20,7 @@
       ItemView
     },
     props: {
-      day: {}
+      day: Object as () => DayView
     }
   })
   export default class DayView extends Vue {
