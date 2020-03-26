@@ -59,7 +59,7 @@ const userModule = {
         };
         context.commit("login", userState);
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       } finally {
         context.commit("setLoading", false);
       }
@@ -162,7 +162,7 @@ export default new Vuex.Store({
       try {
         await context.dispatch("fetchUserInfo");
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       } finally {
         context.commit("setLoading", false);
       }
@@ -176,7 +176,7 @@ export default new Vuex.Store({
         const res = await JournalCrud.getJournal(token);
         context.commit("setJournal", res);
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       } finally {
         context.commit("setLoading", false);
       }
@@ -193,7 +193,7 @@ export default new Vuex.Store({
         await RecordCrud.addExpense(payload.expense, payload.categoryId, token);
         await context.dispatch("fetchJournal");
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       } finally {
         context.commit("setLoading", false);
       }
@@ -207,7 +207,7 @@ export default new Vuex.Store({
         await RecordCrud.addIncome(sum, token);
         await context.dispatch("fetchJournal");
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       } finally {
         context.commit("setLoading", false);
       }
@@ -221,7 +221,7 @@ export default new Vuex.Store({
         await CategoryCrud.addCategory(category, token);
         await context.dispatch("fetchUserInfo");
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       } finally {
         context.commit("setLoading", false);
       }
@@ -236,7 +236,7 @@ export default new Vuex.Store({
         context.commit("setBalance", res.balance);
         context.commit("setCategories", res.categories);
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       } finally {
         context.commit("setLoading", false);
       }
