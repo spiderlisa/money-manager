@@ -65,6 +65,18 @@ const userModule = {
       }
     },
 
+    async register(context: any, data: AuthDTO) {
+      context.commit("setLoading", true);
+
+      try {
+        await AuthCrud.register(data);
+      } catch (error) {
+        //console.error(error);
+      } finally {
+        context.commit("setLoading", false);
+      }
+    },
+
     logout(context: any) {
       context.commit("logout");
     }
