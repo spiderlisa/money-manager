@@ -8,7 +8,10 @@ import {
   CategoryDTO
 } from "@/store/api/endpoints/categoryEndpoints";
 import { JournalCrud } from "@/store/api/endpoints/journalEndpoints";
-import { UserCrud } from "@/store/api/endpoints/userEndpoints";
+import {
+  PasswordChangeDTO,
+  UserCrud
+} from "@/store/api/endpoints/userEndpoints";
 import { RecordCrud, ExpenseDTO } from "@/store/api/endpoints/recordCrud";
 
 Vue.use(Vuex);
@@ -257,6 +260,20 @@ export default new Vuex.Store({
         //console.error(error);
       } finally {
         context.commit("setLoading", false);
+      }
+    },
+
+    async updatePassword(context: any, data: PasswordChangeDTO) {
+      context.commit("setLoading", true);
+
+      try {
+        const token = this.getters["token"];
+        await UserCrud.updatePassword(token, data);
+        context.commit("setLoading", false);
+        return true;
+      } catch (error) {
+        context.commit("setLoading", false);
+        return false;
       }
     }
   },
