@@ -4,7 +4,7 @@
       Register
     </v-card-title>
     <v-card-text>
-      <v-form v-model="dataIsValid" class="px-3 mt-2 mb-4" >
+      <v-form v-model="dataIsValid" class="px-3 mt-2 mb-4">
         <v-text-field
           label="Enter your e-mail address"
           v-model="email"
@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 @Component({
   name: "RegisterForm"
@@ -85,7 +85,7 @@ export default class RegisterForm extends Vue {
     this.passwordVerVisible = !this.passwordVerVisible;
   }
 
-  @Watch('passwordVer')
+  @Watch("passwordVer")
   passwordsMatch(newVal: string) {
     const rule = (v: string) => !v || "Passwords don't match";
     if (newVal !== this.password) {

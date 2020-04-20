@@ -173,7 +173,7 @@ export default new Vuex.Store({
 
       try {
         const token = this.getters["token"];
-        const res = await UserCrud.getProfile(token);
+        await UserCrud.getProfile(token);
         return true;
       } catch (error) {
         return false;
