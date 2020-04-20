@@ -1,8 +1,10 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import MainArea from "@/components/MainArea.vue";
-import Journal from "@/components/pages/Journal.vue";
 import Login from "@/components/pages/Login.vue";
+import MainView from "@/components/pages/MainView.vue";
+import Journal from "@/components/pages/Journal.vue";
+import UserProfile from "@/components/pages/UserProfile.vue";
 import store from "../store";
 
 Vue.use(VueRouter);
@@ -19,9 +21,20 @@ const routes = [
         name: "Login"
       },
       {
-        path: "/home",
-        component: Journal,
-        name: "Home"
+        path: "/",
+        component: MainView,
+        children: [
+          {
+            path: "/home",
+            component: Journal,
+            name: "Home"
+          },
+          {
+            path: "/profile",
+            component: UserProfile,
+            name: "Profile"
+          }
+        ]
       }
     ]
   }

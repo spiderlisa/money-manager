@@ -1,32 +1,26 @@
 <template>
   <v-app-bar flat color="secondary">
-    <v-toolbar-title>Money Manager</v-toolbar-title>
-
+    <v-toolbar-title>
+      <router-link to="/home">
+        Money Manager
+      </router-link>
+    </v-toolbar-title>
     <v-spacer />
-
-    <v-btn v-if="loggedIn" text @click="logout">
-      Log out
-    </v-btn>
+    <ProfileButton />
   </v-app-bar>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import ProfileButton from "./small/ProfileButton.vue";
 
 @Component({
-  name: "Header"
+  name: "Header",
+  components: {
+    ProfileButton
+  }
 })
-export default class Header extends Vue {
-  logout() {
-    this.$store.dispatch("logout");
-    this.$router.push("/login");
-  }
-
-  get loggedIn() {
-    const email = this.$store.getters["email"];
-    return !!email;
-  }
-}
+export default class Header extends Vue {}
 </script>
 
 <style scoped></style>

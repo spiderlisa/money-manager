@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import ItemView from "./ItemView.vue";
+import ItemView from "../small/ItemView.vue";
 import { formatToWritten } from "../../utils/date";
 
 @Component({
