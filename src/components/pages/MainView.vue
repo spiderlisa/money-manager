@@ -41,6 +41,7 @@ export default class MainView extends Vue {
 
   beforeMount() {
     this.$store.dispatch("fetchUserInfo");
+    this.$store.dispatch("fetchJournal");
   }
 
   get balance() {

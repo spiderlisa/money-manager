@@ -25,10 +25,6 @@ import { groupRecordsByDate } from "../../utils/records";
   }
 })
 export default class Journal extends Vue {
-  beforeMount() {
-    this.$store.dispatch("fetchJournal");
-  }
-
   get recordDays() {
     const journal = this.$store.getters["journal"];
     return journal ? groupRecordsByDate(journal) : null;

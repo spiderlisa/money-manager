@@ -5,15 +5,15 @@
     close-on-click
     close-on-content-click
     offset-y
-    nudge-bottom="15"
-    min-width="100"
+    nudge-bottom="10"
+    min-width="120"
   >
     <template v-slot:activator="{ on }">
       <v-btn color="black" small icon class="mr-1" v-on="on">
         <v-icon>mdi-account-circle</v-icon>
       </v-btn>
     </template>
-    <v-list>
+    <v-list dense>
       <v-list-item key="profile" @click="openProfile">
         <v-list-item-title>Profile</v-list-item-title>
       </v-list-item>
@@ -34,10 +34,12 @@ export default class ProfileButton extends Vue {
   value = false;
 
   openProfile() {
+    this.value = false;
     this.$router.push("/profile");
   }
 
   logout() {
+    this.value = false;
     this.$store.dispatch("logout");
     this.$router.push("/login");
   }
