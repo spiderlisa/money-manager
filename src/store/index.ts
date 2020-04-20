@@ -156,6 +156,20 @@ export default new Vuex.Store({
   },
 
   actions: {
+    async checkAuth(context: any) {
+      context.commit("setLoading", true);
+
+      try {
+        const token = this.getters["token"];
+        const res = await UserCrud.getProfile(token);
+        return true;
+      } catch (error) {
+        return false;
+      } finally {
+        context.commit("setLoading", false);
+      }
+    },
+
     async fetchCategories(context: any) {
       context.commit("setLoading", true);
 

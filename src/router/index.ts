@@ -16,12 +16,12 @@ const routes = [
       {
         path: "/login",
         component: Login,
-        title: 'Login'
+        title: "Login"
       },
       {
         path: "/home",
         component: Journal,
-        title: 'Home'
+        title: "Home"
       }
     ]
   }
@@ -34,29 +34,47 @@ const router = new VueRouter({
 let entryUrl: string | null = null;
 router.beforeEach((to, from, next) => {
   // add title
-  document.title = 'Money Manager | ' + to.meta.title;
+  document.title = "Money Manager | " + to.meta.title;
 
-  // reroute login
-  if (to.path !== "/login") {
-    if (store.getters["token"]) {
-      if (entryUrl) {
-        const url = entryUrl;
-        entryUrl = null;
-        return next(url);
-      } else {
-        return next();
+  store
+    .dispatch("checkAuth")
+    .then((isAuthed: boolean) => {
+      // going to normal page
+      if (to.path !== "/login") {
+        // authed
+        if (isAuthed) {
+          if (entryUrl) {
+            const url = entryUrl;
+            entryUrl = null;
+            return next(url);
+          } else {
+            return next();
+          }
+        }
+        // not authed
+        else {
+          return next("/login");
+        }
       }
-    } else {
-      entryUrl = to.path;
-      next("/login");
-    }
-  } else {
-    if (store.getters["token"]) {
-      next("/");
-    } else {
-      next();
-    }
-  }
+      // going to login page
+      else {
+        // authed
+        if (isAuthed) {
+          if (entryUrl) {
+            const url = entryUrl;
+            entryUrl = null;
+            return next(url);
+          } else {
+            return next("/home");
+          }
+        }
+        // not authed
+        else {
+          return next();
+        }
+      }
+    })
+    .catch(err => console.error(err));
 });
 
 export default router;
