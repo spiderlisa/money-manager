@@ -74,7 +74,9 @@ router.beforeEach((to, from, next) => {
         }
       }
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+      //console.error(err)
+    });
 });
 
 export default router;

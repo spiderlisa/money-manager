@@ -251,7 +251,6 @@ export default new Vuex.Store({
       try {
         const token = this.getters["token"];
         const res = await UserCrud.getProfile(token);
-        console.log(res);
         context.commit("setBalance", res.balance);
         context.commit("setCategories", res.categories);
       } catch (error) {
