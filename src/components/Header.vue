@@ -1,6 +1,6 @@
 <template>
   <v-app-bar flat color="secondary">
-    <v-toolbar-title>
+    <v-toolbar-title class="appTitle">
       <router-link to="/home">
         Money Manager
       </router-link>
@@ -23,4 +23,9 @@ import ProfileButton from "./small/ProfileButton.vue";
 export default class Header extends Vue {}
 </script>
 
-<style scoped></style>
+<style scoped>
+.appTitle a {
+  color: #171717;
+  text-decoration: none !important;
+}
+</style>
