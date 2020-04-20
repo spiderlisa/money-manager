@@ -182,18 +182,6 @@ export default new Vuex.Store({
       }
     },
 
-    async fetchCategories(context: any) {
-      context.commit("setLoading", true);
-
-      try {
-        await context.dispatch("fetchUserInfo");
-      } catch (error) {
-        //console.error(error);
-      } finally {
-        context.commit("setLoading", false);
-      }
-    },
-
     async fetchJournal(context: any) {
       context.commit("setLoading", true);
 
@@ -218,6 +206,7 @@ export default new Vuex.Store({
         const token = this.getters["token"];
         await RecordCrud.addExpense(payload.expense, payload.categoryId, token);
         await context.dispatch("fetchJournal");
+        await context.dispatch("fetchUserInfo");
       } catch (error) {
         //console.error(error);
       } finally {
@@ -232,6 +221,7 @@ export default new Vuex.Store({
         const token = this.getters["token"];
         await RecordCrud.addIncome(sum, token);
         await context.dispatch("fetchJournal");
+        await context.dispatch("fetchUserInfo");
       } catch (error) {
         //console.error(error);
       } finally {
@@ -253,12 +243,15 @@ export default new Vuex.Store({
       }
     },
 
+    // fetch categories
+    // fetch balance
     async fetchUserInfo(context: any) {
       context.commit("setLoading", true);
 
       try {
         const token = this.getters["token"];
         const res = await UserCrud.getProfile(token);
+        console.log(res);
         context.commit("setBalance", res.balance);
         context.commit("setCategories", res.categories);
       } catch (error) {
