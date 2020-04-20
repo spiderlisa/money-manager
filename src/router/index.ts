@@ -16,12 +16,12 @@ const routes = [
       {
         path: "/login",
         component: Login,
-        title: "Login"
+        name: "Login"
       },
       {
         path: "/home",
         component: Journal,
-        title: "Home"
+        name: "Home"
       }
     ]
   }
@@ -34,7 +34,7 @@ const router = new VueRouter({
 let entryUrl: string | null = null;
 router.beforeEach((to, from, next) => {
   // add title
-  document.title = "Money Manager | " + to.meta.title;
+  document.title = "Money Manager - " + to.name;
 
   store
     .dispatch("checkAuth")
