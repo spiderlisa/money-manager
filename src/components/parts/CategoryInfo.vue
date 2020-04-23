@@ -48,17 +48,29 @@
         </v-btn>
       </div>
     </v-col>
-    <v-col cols="12" v-if="action === actionType.updateSuccess" class="text-center">
+    <v-col
+      cols="12"
+      v-if="action === actionType.updateSuccess"
+      class="text-center"
+    >
       <v-alert color="accent" border="top" text class="body-2"
         >Category updated</v-alert
       >
     </v-col>
-    <v-col cols="12" v-if="action === actionType.updateFail" class="text-center">
+    <v-col
+      cols="12"
+      v-if="action === actionType.updateFail"
+      class="text-center"
+    >
       <v-alert color="error" border="top" text class="body-2"
         >Failed to update category</v-alert
       >
     </v-col>
-    <v-col cols="12" v-if="action === actionType.deleteFail" class="text-center">
+    <v-col
+      cols="12"
+      v-if="action === actionType.deleteFail"
+      class="text-center"
+    >
       <v-alert color="error" border="top" text class="body-2"
         >Failed to delete category</v-alert
       >

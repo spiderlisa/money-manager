@@ -1,7 +1,7 @@
 <template>
   <v-card flat elevation="1">
     <v-card-title class="px-3">
-      Register
+      Sign up
     </v-card-title>
     <v-card-text>
       <v-form v-model="dataIsValid" class="px-3 mt-2 mb-4">
@@ -39,7 +39,7 @@
           block
           @click="sendForm"
         >
-          Register
+          Sign up
         </v-btn>
       </v-form>
     </v-card-text>
