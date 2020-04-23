@@ -35,31 +35,31 @@
         </v-col>
         <v-col cols="7" v-if="passwordUpdateVisible">
           <v-form ref="passwordForm" v-model="passwordForm">
-            <div class="caption font-weight-bold">Current password</div>
             <v-text-field
               v-model="passwordInfo.current"
               dense
               outlined
+              label="Current password"
               :rules="passwordRules.current"
               :append-icon="passwordVisible.current ? 'mdi-eye-off' : 'mdi-eye'"
               @click:append="passwordVisible.current = !passwordVisible.current"
               :type="passwordVisible.current ? 'text' : 'password'"
             ></v-text-field>
-            <div class="caption font-weight-bold">New password</div>
             <v-text-field
               v-model="passwordInfo.new"
               dense
               outlined
+              label="New password"
               :rules="passwordRules.new"
               :append-icon="passwordVisible.new ? 'mdi-eye-off' : 'mdi-eye'"
               @click:append="passwordVisible.new = !passwordVisible.new"
               :type="passwordVisible.new ? 'text' : 'password'"
             ></v-text-field>
-            <div class="caption font-weight-bold">Confirm new password</div>
             <v-text-field
               v-model="passwordInfo.confirm"
               dense
               outlined
+              label="Confirm new password"
               :rules="passwordRules.confirm"
               :append-icon="passwordVisible.confirm ? 'mdi-eye-off' : 'mdi-eye'"
               @click:append="passwordVisible.confirm = !passwordVisible.confirm"

@@ -275,6 +275,23 @@ export default new Vuex.Store({
         context.commit("setLoading", false);
         return false;
       }
+    },
+
+    async updateCategory(context: any, data: { id: number, category: CategoryDTO }) {
+      context.commit("setLoading", true);
+
+      try {
+        const token = this.getters["token"];
+        await CategoryCrud.updateCategory(data.id, data.category, token);
+
+        context.commit("setLoading", false);
+        await context.dispatch("fetchUserInfo");
+        return true;
+      } catch (error) {
+        context.commit("setLoading", false);
+        await context.dispatch("fetchUserInfo");
+        return false;
+      }
     }
   },
 
