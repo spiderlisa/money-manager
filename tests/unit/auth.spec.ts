@@ -106,4 +106,15 @@ describe("Register", () => {
     );
     expect(userDeleteResponse.responseStatus).toEqual(200);
   });
+
+  it("invalid credentials", async () => {
+    const response: ResponseTest = await TestingHelper.makeRequest(
+        BASE_URL,
+        "login",
+        "POST",
+        {},
+        {email: USERS.SIMPLE.email, password: "jibber_jabber" }
+    );
+    expect(response.responseStatus).toBe(400);
+  });
 });
