@@ -33,6 +33,9 @@
         @values-changed="updateData($event)"
       />
       <div class="d-flex justify-end">
+        <v-btn color="error" small depressed @click="deleteCategory">
+          Delete
+        </v-btn>
         <v-spacer />
         <v-btn
           color="primary"
@@ -45,14 +48,19 @@
         </v-btn>
       </div>
     </v-col>
-    <v-col cols="12" v-if="updateSuccess" class="text-center">
+    <v-col cols="12" v-if="action === actionType.updateSuccess" class="text-center">
       <v-alert color="accent" border="top" text class="body-2"
-      >Category updated</v-alert
+        >Category updated</v-alert
       >
     </v-col>
-    <v-col cols="12" v-if="updateFail" class="text-center">
+    <v-col cols="12" v-if="action === actionType.updateFail" class="text-center">
       <v-alert color="error" border="top" text class="body-2"
-      >Failed to update category</v-alert
+        >Failed to update category</v-alert
+      >
+    </v-col>
+    <v-col cols="12" v-if="action === actionType.deleteFail" class="text-center">
+      <v-alert color="error" border="top" text class="body-2"
+        >Failed to delete category</v-alert
       >
     </v-col>
   </v-row>
@@ -62,6 +70,14 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Category } from "../../store/models";
 import CategoryForm from "./CategoryForm.vue";
+
+enum Action {
+  updateSuccess,
+  updateFail,
+  deleteSuccess,
+  deleteFail,
+  none
+}
 
 @Component({
   name: "CategoryInfo",
@@ -84,8 +100,8 @@ export default class CategoryInfo extends Vue {
     budget: this.category.budget
   };
 
-  updateSuccess = false;
-  updateFail = false;
+  action = Action.none;
+  actionType = Action;
 
   toTitleCase = (str: string) =>
     str.replace(/\w\S*/g, function(txt) {
@@ -105,11 +121,24 @@ export default class CategoryInfo extends Vue {
 
     if (res) {
       this.categoryUpdateVisible = false;
-      this.updateSuccess = true;
-      setTimeout(() => this.updateSuccess = false, 4000);
+      this.action = Action.updateSuccess;
+      setTimeout(() => (this.action = Action.none), 4000);
     } else {
-      this.updateFail = true;
-      setTimeout(() => this.updateFail = false, 4000);
+      this.action = Action.updateFail;
+      setTimeout(() => (this.action = Action.none), 4000);
+    }
+  }
+
+  async deleteCategory() {
+    const res = await this.$store.dispatch("deleteCategory", this.category.id);
+
+    if (res) {
+      this.categoryUpdateVisible = false;
+      this.action = Action.deleteSuccess;
+      setTimeout(() => (this.action = Action.none), 4000);
+    } else {
+      this.action = Action.deleteFail;
+      setTimeout(() => (this.action = Action.none), 4000);
     }
   }
 }
