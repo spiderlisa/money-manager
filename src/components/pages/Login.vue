@@ -1,11 +1,12 @@
 <template>
-  <v-container fluid class="fill-height">
+  <v-container fluid>
     <v-row justify="center">
       <v-col cols="12" sm="6" md="4" lg="3">
-        <RegisterForm />
-      </v-col>
-      <v-col cols="12" sm="6" md="4" lg="3">
         <LoginForm />
+        <div class="my-6 d-flex justify-center" color="primary">
+          or sign up if you don't have an account
+        </div>
+        <RegisterForm />
       </v-col>
     </v-row>
   </v-container>

@@ -4,44 +4,19 @@
       New category
     </v-card-title>
     <v-card-text class="mt-3">
-      <v-form v-model="form" ref="form">
-        <v-text-field
-          dense
-          outlined
-          label="Name"
-          type="text"
-          required
-          :rules="rules.name"
-          v-model="category.name"
-        />
-        <v-select
-          dense
-          outlined
-          required
-          :rules="rules.frequency"
-          label="Frequency"
-          :items="frequencyOptions"
-          v-model="category.frequency"
-        />
-        <v-text-field
-          dense
-          outlined
-          label="Budget"
-          type="number"
-          min="0.01"
-          suffix="$"
-          required
-          :rules="rules.budget"
-          v-model="category.budget"
-        />
-      </v-form>
+      <CategoryForm :cat="category" @values-changed="receiveUpdates($event)" />
 
       <v-row class="px-3">
         <v-spacer />
         <v-btn depressed color="gray" class="mr-2" @click="exit">
           Cancel
         </v-btn>
-        <v-btn depressed color="accent" :disabled="!form" @click="saveCategory">
+        <v-btn
+          depressed
+          color="accent"
+          :disabled="!valid"
+          @click="saveCategory"
+        >
           Save
         </v-btn>
       </v-row>
@@ -51,10 +26,13 @@
 
 <script lang="ts">
 import { Component, Emit, Vue } from "vue-property-decorator";
-import { Frequency } from "../../store/models";
+import CategoryForm from "./CategoryForm.vue";
 
 @Component({
-  name: "AddCategory"
+  name: "AddCategory",
+  components: {
+    CategoryForm
+  }
 })
 export default class AddCategory extends Vue {
   category = {
@@ -62,27 +40,16 @@ export default class AddCategory extends Vue {
     budget: null,
     frequency: null
   };
+  valid = false;
 
-  form = true;
-  rules = {
-    name: [(v: any) => !!v || "Name is required"],
-    budget: [(v: any) => !!v || "Budget is required"],
-    frequency: [(v: any) => !!v || "Frequency is required"]
-  };
-
-  get frequencyOptions() {
-    const StringIsNumber = (value: any) => isNaN(Number(value)) === false;
-    return Object.keys(Frequency)
-      .filter(StringIsNumber)
-      .map((key: any) => Frequency[key]);
+  receiveUpdates(data: { category: any; valid: boolean }) {
+    this.category = data.category;
+    this.valid = data.valid;
   }
 
   @Emit("added-category")
   async saveCategory() {
     await this.$store.dispatch("addCategory", this.category);
-
-    // @ts-ignore
-    this.$refs.form.reset();
   }
 
   @Emit("added-category")

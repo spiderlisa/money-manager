@@ -1,6 +1,6 @@
 // @ts-ignore
 import config from "../config.json";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 export interface AuthDTO {
   email: string;
@@ -8,9 +8,9 @@ export interface AuthDTO {
 }
 
 export class AuthCrud {
-  public static async login(data: AuthDTO): Promise<string> {
+  public static async login(data: AuthDTO): Promise<AxiosResponse> {
     const response = await axios.post(`${config.API_URL}/login`, data);
-    return response.data;
+    return response;
   }
 
   public static async register(data: AuthDTO): Promise<string> {

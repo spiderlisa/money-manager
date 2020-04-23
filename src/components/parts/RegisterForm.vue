@@ -1,7 +1,7 @@
 <template>
   <v-card flat elevation="1">
     <v-card-title class="px-3">
-      Register
+      Sign up
     </v-card-title>
     <v-card-text>
       <v-form v-model="dataIsValid" class="px-3 mt-2 mb-4">
@@ -39,9 +39,14 @@
           block
           @click="sendForm"
         >
-          Register
+          Sign up
         </v-btn>
       </v-form>
+      <div class="text-center mt-6" v-if="!!registerError">
+        <v-alert color="error" border="top" text class="body-2">{{
+          registerError
+        }}</v-alert>
+      </div>
     </v-card-text>
   </v-card>
 </template>
@@ -77,6 +82,8 @@ export default class RegisterForm extends Vue {
   passwordVisible = false;
   passwordVerVisible = false;
 
+  registerError = false;
+
   togglePasswordVisibility() {
     this.passwordVisible = !this.passwordVisible;
   }
@@ -103,14 +110,15 @@ export default class RegisterForm extends Vue {
       email: this.email,
       password: this.password
     };
-    this.$store
-      .dispatch("register", authData)
-      .then(() => {
+
+    this.$store.dispatch("register", authData).then(res => {
+      if (res.success) {
         this.$router.push("/login");
-      })
-      .catch(err => {
-        //console.error(err);
-      });
+      } else {
+        this.registerError = res.message;
+        setTimeout(() => (this.registerError = false), 3000);
+      }
+    });
   }
 }
 </script>

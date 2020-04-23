@@ -54,17 +54,20 @@ const userModule = {
       context.commit("setLoading", true);
 
       try {
-        const token = await AuthCrud.login(data);
+        const response = await AuthCrud.login(data);
 
+        const token = response.data;
         const userState = {
           email: data.email,
           token: token
         };
+
         context.commit("login", userState);
-      } catch (error) {
-        //console.error(error);
-      } finally {
         context.commit("setLoading", false);
+        return { success: true };
+      } catch (error) {
+        context.commit("setLoading", false);
+        return { success: false, message: error.response.data };
       }
     },
 
@@ -73,10 +76,12 @@ const userModule = {
 
       try {
         await AuthCrud.register(data);
-      } catch (error) {
-        //console.error(error);
-      } finally {
+
         context.commit("setLoading", false);
+        return { success: true };
+      } catch (error) {
+        context.commit("setLoading", false);
+        return { success: false, message: error.response.data };
       }
     },
 
@@ -273,6 +278,43 @@ export default new Vuex.Store({
         return true;
       } catch (error) {
         context.commit("setLoading", false);
+        return false;
+      }
+    },
+
+    async updateCategory(
+      context: any,
+      data: { id: number; category: CategoryDTO }
+    ) {
+      context.commit("setLoading", true);
+
+      try {
+        const token = this.getters["token"];
+        await CategoryCrud.updateCategory(data.id, data.category, token);
+
+        context.commit("setLoading", false);
+        await context.dispatch("fetchUserInfo");
+        return true;
+      } catch (error) {
+        context.commit("setLoading", false);
+        await context.dispatch("fetchUserInfo");
+        return false;
+      }
+    },
+
+    async deleteCategory(context: any, id: number) {
+      context.commit("setLoading", true);
+
+      try {
+        const token = this.getters["token"];
+        await CategoryCrud.deleteCategory(id, token);
+
+        context.commit("setLoading", false);
+        await context.dispatch("fetchUserInfo");
+        return true;
+      } catch (error) {
+        context.commit("setLoading", false);
+        await context.dispatch("fetchUserInfo");
         return false;
       }
     }
