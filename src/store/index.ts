@@ -54,17 +54,20 @@ const userModule = {
       context.commit("setLoading", true);
 
       try {
-        const token = await AuthCrud.login(data);
+        const response = await AuthCrud.login(data);
 
+        const token = response.data;
         const userState = {
           email: data.email,
           token: token
         };
+
         context.commit("login", userState);
-      } catch (error) {
-        //console.error(error);
-      } finally {
         context.commit("setLoading", false);
+        return { success: true };
+      } catch (error) {
+        context.commit("setLoading", false);
+        return { success: false, message: error.response.data };
       }
     },
 
@@ -73,10 +76,12 @@ const userModule = {
 
       try {
         await AuthCrud.register(data);
-      } catch (error) {
-        //console.error(error);
-      } finally {
+
         context.commit("setLoading", false);
+        return { success: true };
+      } catch (error) {
+        context.commit("setLoading", false);
+        return { success: false, message: error.response.data };
       }
     },
 

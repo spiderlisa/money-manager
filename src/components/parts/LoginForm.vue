@@ -32,6 +32,11 @@
           Sign in
         </v-btn>
       </v-form>
+      <div class="text-center mt-6" v-if="!!loginError">
+        <v-alert color="error" border="top" text class="body-2">{{
+          loginError
+        }}</v-alert>
+      </div>
     </v-card-text>
   </v-card>
 </template>
@@ -62,23 +67,26 @@ export default class LoginForm extends Vue {
   dataIsValid = false;
   passwordVisible = false;
 
+  loginError = false;
+
   togglePasswordVisibility() {
     this.passwordVisible = !this.passwordVisible;
   }
 
-  sendForm() {
+  async sendForm() {
     const authData = {
       email: this.email,
       password: this.password
     };
-    this.$store
-      .dispatch("login", authData)
-      .then(() => {
+
+    this.$store.dispatch("login", authData).then(res => {
+      if (res.success) {
         this.$router.push("/home");
-      })
-      .catch(err => {
-        //console.error(err);
-      });
+      } else {
+        this.loginError = res.message;
+        setTimeout(() => (this.loginError = false), 3000);
+      }
+    });
   }
 }
 </script>
