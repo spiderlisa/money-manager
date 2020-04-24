@@ -123,7 +123,10 @@ export default class AddItem extends Vue {
 
   form = true;
   rules = {
-    amount: [(v: any) => !!v || "Amount is required"],
+    amount: [
+      (v: any) => !!v || "Amount is required",
+      (v: any) => v > 0 || "Amount cannot be negative"
+    ],
     category: [(v: any) => !!v || "Category is required"]
   };
 

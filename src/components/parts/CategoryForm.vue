@@ -57,7 +57,10 @@ export default class CategoryForm extends Vue {
   form = true;
   rules = {
     name: [(v: any) => !!v || "Name is required"],
-    budget: [(v: any) => !!v || "Budget is required"],
+    budget: [
+      (v: any) => !!v || "Budget is required",
+      (v: any) => v > 0 || "Budget cannot be negative"
+    ],
     frequency: [(v: any) => !!v || "Frequency is required"]
   };
 
